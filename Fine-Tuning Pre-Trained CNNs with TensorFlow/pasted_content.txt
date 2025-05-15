@@ -1,0 +1,144 @@
+Mini Project: Transfer Learning with Keras
+Transfer learning is a machine learning technique where a model trained on one task is used as a starting point to solve a different but related task. Instead of training a model from scratch, transfer learning leverages the knowledge learned from the source task and applies it to the target task. This approach is especially useful when the target task has limited data or computational resources.
+
+In transfer learning, the pre-trained model, also known as the "base model" or "source model," is typically trained on a large dataset and a more general problem (e.g., image classification on ImageNet, a vast dataset with millions of labeled images). The knowledge learned by the base model in the form of feature representations and weights captures common patterns and features in the data.
+
+To perform transfer learning, the following steps are commonly followed:
+
+Pre-training: The base model is trained on a source task using a large dataset, which can take a considerable amount of time and computational resources.
+
+Feature Extraction: After pre-training, the base model is used as a feature extractor. The last few layers (classifier layers) of the model are discarded, and the remaining layers (feature extraction layers) are retained. These layers serve as feature extractors, producing meaningful representations of the data.
+
+Fine-tuning: The feature extraction layers and sometimes some of the earlier layers are connected to a new set of layers, often called the "classifier layers" or "task-specific layers." These layers are randomly initialized, and the model is trained on the target task with a smaller dataset. The weights of the base model can be frozen during fine-tuning, or they can be allowed to be updated with a lower learning rate to fine-tune the model for the target task.
+
+Transfer learning has several benefits:
+
+Reduced training time and resource requirements: Since the base model has already learned generic features, transfer learning can save time and resources compared to training a model from scratch.
+
+Improved generalization: Transfer learning helps the model generalize better to the target task, especially when the target dataset is small and dissimilar from the source dataset.
+
+Better performance: By starting from a model that is already trained on a large dataset, transfer learning can lead to better performance on the target task, especially in scenarios with limited data.
+
+Effective feature extraction: The feature extraction layers of the pre-trained model can serve as powerful feature extractors for different tasks, even when the task domains differ.
+
+Transfer learning is commonly used in various domains, including computer vision, natural language processing (NLP), and speech recognition, where pre-trained models are fine-tuned for specific applications like object detection, sentiment analysis, or speech-to-text.
+
+In this mini-project you will perform fine-tuning using Keras with a pre-trained VGG16 model on the CIFAR-10 dataset.
+
+First, import all the libraries you'll need.
+
+
+import numpy as np
+import tensorflow as tf
+from tensorflow.keras.datasets import cifar10
+from tensorflow.keras.applications import VGG16
+from tensorflow.keras.models import Model
+from tensorflow.keras.layers import Dense, GlobalAveragePooling2D
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.utils import to_categorical
+from sklearn.model_selection import train_test_split
+     
+The CIFAR-10 dataset is a widely used benchmark dataset in the field of computer vision and machine learning. It stands for the "Canadian Institute for Advanced Research 10" dataset. CIFAR-10 was created by researchers at the CIFAR institute and was originally introduced as part of the Neural Information Processing Systems (NIPS) 2009 competition.
+
+The dataset consists of 60,000 color images, each of size 32x32 pixels, belonging to ten different classes. Each class contains 6,000 images. The ten classes in CIFAR-10 are:
+
+Airplane
+Automobile
+Bird
+Cat
+Deer
+Dog
+Frog
+Horse
+Ship
+Truck
+The images are evenly distributed across the classes, making CIFAR-10 a balanced dataset. The dataset is divided into two sets: a training set and a test set. The training set contains 50,000 images, while the test set contains the remaining 10,000 images.
+
+CIFAR-10 is often used for tasks such as image classification, object recognition, and transfer learning experiments. The relatively small size of the images and the variety of classes make it a challenging dataset for training machine learning models, especially deep neural networks. It also serves as a good dataset for teaching and learning purposes due to its manageable size and straightforward class labels.
+
+Here are your tasks:
+
+Load the CIFAR-10 dataset after referencing the documentation here.
+Normalize the pixel values so they're all in the range [0, 1].
+Apply One Hot Encoding to the train and test labels using the to_categorical function.
+Further split the the training data into training and validation sets using train_test_split. Use only 10% of the data for validation.
+
+# Load the CIFAR-10 dataset
+     
+
+# Normalize the pixel values to [0, 1]
+     
+
+# One-hot encode the labels
+     
+
+# Split the data into training and validation sets
+     
+VGG16 (Visual Geometry Group 16) is a deep convolutional neural network architecture that was developed by the Visual Geometry Group at the University of Oxford. It was proposed by researchers Karen Simonyan and Andrew Zisserman in their paper titled "Very Deep Convolutional Networks for Large-Scale Image Recognition," which was presented at the International Conference on Learning Representations (ICLR) in 2015.
+
+The VGG16 architecture gained significant popularity for its simplicity and effectiveness in image classification tasks. It was one of the pioneering models that demonstrated the power of deeper neural networks for visual recognition tasks.
+
+Key characteristics of the VGG16 architecture:
+
+Architecture: VGG16 consists of a total of 16 layers, hence the name "16." These layers are stacked one after another, forming a deep neural network.
+
+Convolutional Layers: The main building blocks of VGG16 are the convolutional layers. It primarily uses 3x3 convolutional filters throughout the network, which allows it to capture local features effectively.
+
+Max Pooling: After each set of convolutional layers, VGG16 applies max-pooling layers with 2x2 filters and stride 2, which halves the spatial dimensions (width and height) of the feature maps and reduces the number of parameters.
+
+Fully Connected Layers: Towards the end of the network, VGG16 has fully connected layers that act as a classifier to make predictions based on the learned features.
+
+Activation Function: The network uses the Rectified Linear Unit (ReLU) activation function for all hidden layers, which helps with faster convergence during training.
+
+Number of Filters: The number of filters in each convolutional layer is relatively small compared to more recent architectures like ResNet or InceptionNet. However, stacking multiple layers allows VGG16 to learn complex hierarchical features.
+
+Output Layer: The output layer consists of 1000 units, corresponding to 1000 ImageNet classes. VGG16 was originally trained on the large-scale ImageNet dataset, which contains millions of images from 1000 different classes.
+
+VGG16 was instrumental in showing that increasing the depth of a neural network can significantly improve its performance on image recognition tasks. However, the main drawback of VGG16 is its high number of parameters, making it computationally expensive and memory-intensive to train. Despite this limitation, VGG16 remains an essential benchmark architecture and has paved the way for even deeper and more efficient models in the field of computer vision, such as ResNet, DenseNet, and EfficientNet.
+
+Here are your tasks:
+
+Load VGG16 as a base model. Make sure to exclude the top layer.
+Freeze all the layers in the base model. We'll be using these weights as a feature extraction layer to forward to layers that are trainable.
+
+# Load the pre-trained VGG16 model (excluding the top classifier)
+     
+
+# Freeze the layers in the base model
+     
+Now, we'll add some trainable layers to the base model.
+
+Using the base model, add a GlobalAveragePooling2D layer, followed by a Dense layer of length 256 with ReLU activation. Finally, add a classification layer with 10 units, corresponding to the 10 CIFAR-10 classes, with softmax activation.
+Create a Keras Model that takes in approproate inputs and outputs.
+
+# Add a global average pooling layer
+     
+
+# Add a fully connected layer with 256 units and ReLU activation
+
+     
+
+# Add the final classification layer with 10 units (for CIFAR-10 classes) and softmax activation
+     
+
+# Create the fine-tuned model
+     
+With your model complete it's time to train it and assess its performance.
+
+Compile your model using an appropriate loss function. Feel free to play around with the optimizer, but a good starting optimizer might be Adam with a learning rate of 0.001.
+Fit your model on the training data. Use the validation data to print the accuracy for each epoch. Try training for 10 epochs. Note, training can take a few hours so go ahead and grab a cup of coffee.
+Optional: See if you can implement an Early Stopping criteria as a callback function.
+
+
+# Compile the model
+     
+
+# Train the model
+     
+With your model trained, it's time to assess how well it performs on the test data.
+
+Use your trained model to calculate the accuracy on the test set. Is the model performance better than random?
+Experiment! See if you can tweak your model to improve performance.
+
+# Evaluate the model on the test set
+     

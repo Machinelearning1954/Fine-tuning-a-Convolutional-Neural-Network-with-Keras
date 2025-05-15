@@ -1,0 +1,30 @@
+# CNN Fine-Tuning Project Todo List
+
+- [x] Review project rubric and requirements
+- [x] Select and download suitable real-world dataset (CIFAR-10)
+- [x] Load and preprocess dataset for CNN
+    - [x] Load CIFAR-10 dataset
+    - [x] Normalize pixel values to [0, 1]
+    - [x] Apply One Hot Encoding to train and test labels
+    - [x] Split training data into training and validation sets (10% for validation)
+- [x] Choose pre-trained CNN model (VGG16) and customize top layers
+    - [x] Load VGG16 as a base model (exclude top layer)
+    - [x] Freeze all layers in the base model
+    - [x] Add GlobalAveragePooling2D layer
+    - [x] Add Dense layer (256 units, ReLU activation)
+    - [x] Add classification layer (10 units, softmax activation)
+    - [x] Create Keras Model
+- [x] Compile and configure transfer learning pipeline
+    - [x] Compile model (Adam optimizer, learning rate 0.001, appropriate loss function)
+- [ ] Train fine-tuned model on dataset
+    - [ ] Fit model on training data (10 epochs, use validation data for accuracy per epoch)
+    - [ ] Optional: Implement Early Stopping
+- [ ] Evaluate model performance and fine-tune hyperparameters
+    - [ ] Calculate accuracy on the test set
+    - [ ] Experiment with model tweaks to improve performance (if necessary)
+- [ ] Document code and create a well-structured GitHub repository
+    - [ ] Add comments and explanations to the code
+    - [ ] Create a README.md for the GitHub repository
+    - [ ] Structure the repository logically
+- [ ] Validate project against rubric and submission requirements
+- [ ] Report and send complete project to user (Colab notebook, GitHub repo link)
